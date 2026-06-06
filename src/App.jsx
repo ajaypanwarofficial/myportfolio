@@ -8,11 +8,13 @@ const BRANDS = [
   { name: 'Jio' },
 ]
 
+const BASE = import.meta.env.BASE_URL
+
 const WORK = [
-  { label: 'Brand Film', file: '/videos/work1.mp4' },
-  { label: 'Product Launch', file: '/videos/work2.mp4' },
-  { label: 'Campaign', file: '/videos/work3.mp4' },
-  { label: 'Social Cut', file: '/videos/work4.mp4' },
+  { label: 'Brand Film', file: `${BASE}videos/work1.mp4` },
+  { label: 'Product Launch', file: `${BASE}videos/work2.mp4` },
+  { label: 'Campaign', file: `${BASE}videos/work3.mp4` },
+  { label: 'Social Cut', file: `${BASE}videos/work4.mp4` },
 ]
 
 function VideoCard({ src, label }) {
@@ -53,7 +55,7 @@ function App() {
       <section className="hero">
         <video
           className="hero-video"
-          src="/videos/work1.mp4"
+          src={`${BASE}videos/work1.mp4`}
           autoPlay
           muted
           loop
