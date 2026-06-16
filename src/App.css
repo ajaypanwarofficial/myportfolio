@@ -1,29 +1,3 @@
-/* ── Base ── */
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #0c0a09;
-  color: #f5f0eb;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 /* ── Hero ── */
 .hero {
   position: relative;
@@ -49,8 +23,8 @@ a {
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(12, 10, 9, 0.3) 0%,
-    rgba(12, 10, 9, 0.75) 100%
+    rgba(12, 10, 9, 0.4) 0%,
+    rgba(12, 10, 9, 0.8) 100%
   );
   z-index: 1;
 }
@@ -60,40 +34,26 @@ a {
   z-index: 2;
   text-align: center;
   padding: 0 24px;
-  max-width: 720px;
+  max-width: 800px;
 }
 
-.hero-content h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(3rem, 7vw, 5.5rem);
-  font-weight: 700;
-  font-style: italic;
+.hero-quote {
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  line-height: 1.05;
-  margin-bottom: 20px;
-}
-
-.hero-content p {
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  color: rgba(245, 240, 235, 0.6);
-  line-height: 1.7;
-  margin-bottom: 40px;
-}
-
-.brand-chalk {
-  font-size: 0.9rem;
-  color: rgba(245, 240, 235, 0.35);
-  letter-spacing: 0.06em;
+  color: #f5f0eb;
 }
 
 .hero-scroll {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: rgba(245, 240, 235, 0.35);
+  color: rgba(245, 240, 235, 0.3);
   font-size: 0.75rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  margin-top: 48px;
   animation: bounce 2s infinite;
 }
 
@@ -102,116 +62,173 @@ a {
   50% { transform: translateY(6px); }
 }
 
-/* ── Brands ── */
-.brands {
-  padding: 100px 24px 80px;
-  max-width: 640px;
+/* ── Intro ── */
+.intro {
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 0 24px;
 }
 
-.brands-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.brands-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.3rem, 2.5vw, 1.6rem);
-  font-weight: 500;
-  font-style: italic;
-  color: rgba(245, 240, 235, 0.4);
-  letter-spacing: 0.08em;
-}
-
-.brands-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-
-.brand-item {
+.intro-slide {
+  min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 20px 12px;
-  border-radius: 0;
-  border: 1px solid rgba(245, 240, 235, 0.08);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  color: rgba(245, 240, 235, 0.5);
-  transition: color 0.2s, border-color 0.2s;
-  text-transform: uppercase;
+  gap: 64px;
+  padding: 80px 0;
 }
 
-.brand-item:hover {
-  color: rgba(245, 240, 235, 0.85);
-  border-color: rgba(245, 240, 235, 0.2);
+.intro-slide:first-child {
+  flex-direction: row;
 }
 
-/* ── Work ── */
-.work {
-  padding: 0 24px 120px;
+.intro-slide:last-child {
+  flex-direction: row-reverse;
+}
+
+.intro-image {
+  flex: 1;
+  max-width: 55%;
+}
+
+.intro-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.intro-text {
+  flex: 1;
+  max-width: 45%;
+}
+
+.intro-text h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: #f5f0eb;
+}
+
+/* ── Content Garage ── */
+.garage {
+  padding: 120px 24px;
   max-width: 1100px;
   margin: 0 auto;
 }
 
-.work-header {
+.garage-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
-.work-header h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
-  font-weight: 500;
+.garage-header h2 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   margin-bottom: 8px;
+  text-transform: uppercase;
 }
 
-.work-header p {
+.garage-header p {
   color: rgba(245, 240, 235, 0.35);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
-.work-grid {
+.garage-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 
-.work-card {
+.garage-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.garage-card-media {
   position: relative;
   overflow: hidden;
-  background: rgba(245, 240, 235, 0.03);
-  border: 1px solid rgba(245, 240, 235, 0.06);
   aspect-ratio: 9 / 16;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color 0.3s;
+  background: #151312;
+  border: 1px solid rgba(245, 240, 235, 0.06);
 }
 
-.work-card:hover {
-  border-color: rgba(245, 240, 235, 0.15);
-}
-
-.work-card video {
+.garage-card-media video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.work-card-label {
+/* ── Garage Door / Shutter ── */
+.garage-door {
   position: absolute;
-  bottom: 12px;
-  left: 12px;
-  font-size: 0.65rem;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #151312;
+  cursor: pointer;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.garage-door::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 38px,
+    rgba(245, 240, 235, 0.03) 38px,
+    rgba(245, 240, 235, 0.03) 40px
+  );
+  pointer-events: none;
+}
+
+.garage-door::after {
+  content: '';
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 6px;
+  background: rgba(245, 240, 235, 0.1);
+  border-radius: 3px;
+}
+
+.garage-door.open {
+  transform: translateY(-100%);
+}
+
+.garage-door-brand {
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 240, 235, 0.7);
+  text-align: center;
+  padding: 12px;
+  line-height: 1.3;
+}
+
+.garage-card-link {
+  font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: rgba(245, 240, 235, 0.5);
-  text-transform: uppercase;
+  color: rgba(245, 240, 235, 0.4);
+  transition: color 0.2s;
+  padding: 0 4px;
+}
+
+.garage-card-link:hover {
+  color: #f5f0eb;
 }
 
 /* ── Contact ── */
@@ -223,10 +240,9 @@ a {
 }
 
 .contact h2 {
-  font-family: 'Playfair Display', serif;
   font-size: clamp(2rem, 4vw, 2.8rem);
-  font-weight: 500;
-  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   margin-bottom: 16px;
 }
 
@@ -250,6 +266,7 @@ a {
   font-size: 0.9rem;
   letter-spacing: 0.03em;
   transition: background 0.2s, border-color 0.2s;
+  font-family: inherit;
 }
 
 .contact-email:hover {
@@ -270,6 +287,7 @@ a {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   transition: color 0.2s;
+  font-weight: 500;
 }
 
 .contact-social a:hover {
@@ -288,27 +306,43 @@ a {
 
 /* ── Responsive ── */
 @media (max-width: 900px) {
-  .work-grid {
+  .garage-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .intro-slide,
+  .intro-slide:last-child {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .intro-image {
+    max-width: 100%;
+  }
+
+  .intro-text {
+    max-width: 100%;
   }
 }
 
 @media (max-width: 640px) {
-  .brands-grid {
+  .garage-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
-  .work-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  .garage {
+    padding: 80px 16px;
   }
 
-  .brands {
-    padding: 80px 16px 60px;
+  .intro {
+    padding: 0 16px;
   }
 
-  .work {
-    padding: 0 16px 80px;
+  .intro-slide {
+    min-height: auto;
+    padding: 60px 0;
   }
 
   .contact {
@@ -317,7 +351,9 @@ a {
 }
 
 @media (max-width: 420px) {
-  .work-grid {
+  .garage-grid {
     grid-template-columns: 1fr;
+    max-width: 360px;
+    margin: 0 auto;
   }
 }
