@@ -224,7 +224,7 @@ function IntroWipe() {
         <div className="layer-glow" />
         <div className="layer-text top-text">
           <div ref={topBadgeRef} className="text-badge">
-            <p className="subject-callout">Hi, I&apos;m Ajay.</p>
+            <p className="subject-callout">Hi, I&apos;m Ajay</p>
           </div>
         </div>
       </div>
