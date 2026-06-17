@@ -115,11 +115,13 @@ function IntroWipe() {
   const topLayerRef = useRef(null)
   const cutoutRef = useRef(null)
   const glowRunRef = useRef(null)
+  const topRaysRef = useRef(null)
   const topOverlayRef = useRef(null)
   const topBadgeRef = useRef(null)
   const backlightRef = useRef(null)
   const cutoutBottomRef = useRef(null)
   const glowBottomRef = useRef(null)
+  const bottomRaysRef = useRef(null)
   const bottomBacklightRef = useRef(null)
   const bottomBadgeRef = useRef(null)
 
@@ -128,11 +130,13 @@ function IntroWipe() {
     const topLayer = topLayerRef.current
     const cutout = cutoutRef.current
     const glowRun = glowRunRef.current
+    const topRays = topRaysRef.current
     const topOverlay = topOverlayRef.current
     const topBadge = topBadgeRef.current
     const backlight = backlightRef.current
     const cutoutBottom = cutoutBottomRef.current
     const glowBottom = glowBottomRef.current
+    const bottomRays = bottomRaysRef.current
     const bottomBacklight = bottomBacklightRef.current
     const bottomBadge = bottomBadgeRef.current
     if (!section || !topLayer) return
@@ -141,7 +145,7 @@ function IntroWipe() {
       scrollTrigger: {
         trigger: section,
         start: 'top top',
-        end: '+=150%',
+        end: '+=200%',
         pin: true,
         scrub: true,
       },
@@ -150,14 +154,17 @@ function IntroWipe() {
     tl.set(topLayer, { clipPath: 'inset(0 0 0 0)' })
     tl.set(topBadge, { opacity: 0 })
     tl.set(glowRun, { opacity: 0, '--glow-angle': '10deg' })
+    tl.set(topRays, { opacity: 0 })
     tl.set(backlight, { opacity: 0 })
     tl.set(bottomBadge, { opacity: 0 })
     tl.set(glowBottom, { opacity: 0, '--glow-angle': '10deg' })
+    tl.set(bottomRays, { opacity: 0 })
     tl.set(bottomBacklight, { opacity: 0 })
 
     tl.to(cutout, { opacity: 1, scale: 1.025, duration: 0.5, ease: 'power2.out' }, 0)
     tl.to(topOverlay, { opacity: 0.7, duration: 0.4, ease: 'power2.out' }, 0)
     tl.to(backlight, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0)
+    tl.to(topRays, { opacity: 0.5, duration: 0.7, ease: 'power2.out' }, 0)
 
     tl.to(glowRun, {
       opacity: 0.75,
@@ -168,18 +175,16 @@ function IntroWipe() {
 
     tl.to(topBadge, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2)
 
-    tl.to(glowRun, {
-      opacity: 0.08,
-      duration: 0.5,
-      ease: 'power2.out',
-    }, 0.8)
+    tl.to(glowRun, { opacity: 0.12, duration: 0.4, ease: 'power2.out' }, 0.6)
+    tl.to(topRays, { opacity: 0.15, duration: 0.4, ease: 'power2.out' }, 0.6)
 
-    tl.to(topLayer, { clipPath: 'inset(0 0 100% 0)', duration: 1.1, ease: 'none' }, 0.5)
+    tl.to(topLayer, { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'power2.inOut' }, 1.0)
 
-    tl.to(cutoutBottom, { opacity: 1, scale: 1.015, duration: 0.5, ease: 'power2.out' }, 0.65)
-    tl.to(glowBottom, { opacity: 0.5, '--glow-angle': '200deg', duration: 0.6, ease: 'power2.out' }, 0.75)
-    tl.to(bottomBacklight, { opacity: 0.6, duration: 0.5, ease: 'power2.out' }, 0.7)
-    tl.to(bottomBadge, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 1.2)
+    tl.to(cutoutBottom, { opacity: 1, scale: 1.015, duration: 0.4, ease: 'power2.out' }, 1.05)
+    tl.to(glowBottom, { opacity: 0.55, '--glow-angle': '220deg', duration: 0.5, ease: 'power2.out' }, 1.1)
+    tl.to(bottomRays, { opacity: 0.35, duration: 0.5, ease: 'power2.out' }, 1.1)
+    tl.to(bottomBacklight, { opacity: 0.6, duration: 0.4, ease: 'power2.out' }, 1.1)
+    tl.to(bottomBadge, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 1.35)
 
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill())
@@ -194,6 +199,7 @@ function IntroWipe() {
           <div ref={glowBottomRef} className="cutout-glow-run">
             <img src={`${BASE}adult-cutout.png`} alt="" className="cutout-glow-image" />
           </div>
+          <div ref={bottomRaysRef} className="cutout-rays" />
           <div ref={bottomBacklightRef} className="backlight" />
           <img ref={cutoutBottomRef} src={`${BASE}adult-cutout.png`} alt="" className="cutout-subject cutout-bottom" />
         </div>
@@ -210,6 +216,7 @@ function IntroWipe() {
           <div ref={glowRunRef} className="cutout-glow-run">
             <img src={`${BASE}childhood-cutout.png`} alt="" className="cutout-glow-image" />
           </div>
+          <div ref={topRaysRef} className="cutout-rays" />
           <div ref={backlightRef} className="backlight" />
           <img ref={cutoutRef} src={`${BASE}childhood-cutout.png`} alt="" className="cutout-subject" />
         </div>
