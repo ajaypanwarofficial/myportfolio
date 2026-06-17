@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import Lenis from 'lenis'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './App.css'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const BASE = import.meta.env.BASE_URL
 
@@ -108,44 +112,49 @@ function VideoPlayer({ file, onClose }) {
 
 function IntroWipe() {
   const sectionRef = useRef(null)
-  const [progress, setProgress] = useState(0)
+  const topLayerRef = useRef(null)
 
   useEffect(() => {
     const section = sectionRef.current
-    if (!section) return
+    const topLayer = topLayerRef.current
+    if (!section || !topLayer) return
 
-    let rafId
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: '+=150%',
+        pin: true,
+        scrub: true,
+      },
+    })
 
-    const update = () => {
-      const rect = section.getBoundingClientRect()
-      const h = rect.height
-      const wh = window.innerHeight
-      const p = Math.max(0, Math.min(1, (wh - rect.top) / (h - wh)))
-      setProgress(p)
-      rafId = requestAnimationFrame(update)
+    tl.set(topLayer, { clipPath: 'inset(0 0 0 0)' })
+    tl.to(topLayer, {
+      clipPath: 'inset(0 0 100% 0)',
+      ease: 'none',
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill())
     }
-
-    rafId = requestAnimationFrame(update)
-    return () => cancelAnimationFrame(rafId)
   }, [])
 
   return (
     <section ref={sectionRef} className="intro-wipe" id="intro">
-      <div className="wipe-sticky">
-        <div className="wipe-layer adult">
-          <img src={`${BASE}big-boy.jpg`} alt="Adult" />
-          <div className="wipe-overlay" />
-          <div className="wipe-text">
-            <h2>I may look like this now, but I&apos;m still the kid who survived.<br />That&apos;s what an artist is at the end of the day.</h2>
-          </div>
+      <div className="bottom-layer">
+        <img src={`${BASE}big-boy_2.jpg`} alt="Adult" className="layer-image" />
+        <div className="layer-overlay" />
+        <div className="layer-text bottom-text">
+          <h2>Although I have grown up a little bit, I try to preserve that childlike quality. It&apos;s not easy, but that&apos;s the only thing which keeps it fun. I read somewhere on the internet that an artist is basically a kid who survived&hellip; I think I survived.</h2>
         </div>
-        <div className="wipe-layer childhood" style={{ clipPath: `inset(0 0 ${progress * 100}% 0)` }}>
-          <img src={`${BASE}childhood.jpg`} alt="Childhood" />
-          <div className="wipe-glow" />
-          <div className="wipe-overlay" />
-          <div className="wipe-text">
-            <h2>That&apos;s me, Ajay!</h2>
-          </div>
+      </div>
+      <div ref={topLayerRef} className="top-layer">
+        <img src={`${BASE}Childhood_2.jpg`} alt="Childhood" className="layer-image" />
+        <div className="layer-glow" />
+        <div className="layer-overlay" />
+        <div className="layer-text top-text">
+          <h2>Hi, I am Ajay,</h2>
         </div>
       </div>
     </section>
@@ -164,6 +173,7 @@ function App() {
 
     function raf(time) {
       lenis.raf(time)
+      ScrollTrigger.update()
       requestAnimationFrame(raf)
     }
     requestAnimationFrame(raf)
@@ -200,21 +210,19 @@ function App() {
         <div className="philosophy-content">
           <h2 className="philosophy-heading">Marketing Philosophy</h2>
           <p>
-            I could mention the great numbers and achievements I got through my
-            work, but that&apos;s not why you are here. If you needed numbers,
-            the platforms already sell them for a reasonable price. If numbers
-            were everything, then marketing could be so simple — just get the
-            most followed person, pay them, and you are done. But branding is
-            beyond numbers. It&apos;s the art of communication that goes beyond
-            the viral hook or trending short-form videos. If you are looking for
-            authentic communication, then you are at the right place.
+            I could mention the numbers and achievements from my work, but
+            that&apos;s not why you are here. If you need numbers, platforms
+            already sell them at a reasonable price. If numbers were everything,
+            marketing would be simple — get the most-followed person, pay them,
+            done. But branding is beyond numbers. It&apos;s the art of
+            communication beyond the viral hook or trends. If you are looking
+            for authentic communication, you are at the right place.
           </p>
         </div>
       </section>
 
       <section className="contact" id="contact">
-        <h2>Let&apos;s create</h2>
-        <p>Best way to contact me is mail.</p>
+        <p className="contact-intro">Best way to contact me is mail.</p>
         <a href="mailto:collabwithajay@gmail.com" className="contact-email">
           collabwithajay@gmail.com
         </a>

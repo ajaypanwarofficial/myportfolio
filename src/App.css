@@ -67,7 +67,8 @@
 .hero-bar {
   position: absolute;
   bottom: 40px;
-  left: 80px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 32px;
   height: 2px;
   background: rgba(245, 240, 235, 0.25);
@@ -239,67 +240,65 @@
 /* ── Intro Wipe ── */
 .intro-wipe {
   position: relative;
-  height: 400vh;
-}
-
-.wipe-sticky {
-  position: sticky;
-  top: 0;
+  width: 100%;
   height: 100vh;
-  overflow: hidden;
 }
 
-.wipe-layer {
+.bottom-layer,
+.top-layer {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.wipe-layer img {
+.layer-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 55% 30%;
+  object-position: 50% 50%;
   display: block;
 }
 
-.wipe-layer.adult img {
-  object-position: 55% 30%;
+.top-layer {
+  z-index: 2;
+  clip-path: inset(0 0 0 0);
 }
 
-.wipe-overlay {
+.layer-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(12, 10, 9, 0.25);
+  background: rgba(12, 10, 9, 0.4);
   z-index: 1;
 }
 
-.wipe-glow {
+.layer-glow {
   position: absolute;
   inset: 0;
   background: radial-gradient(
-    ellipse 50% 50% at 55% 30%,
-    rgba(255, 220, 150, 0.2) 0%,
+    ellipse 50% 50% at 50% 50%,
+    rgba(255, 220, 150, 0.12) 0%,
     transparent 60%
   );
   pointer-events: none;
   z-index: 2;
 }
 
-.wipe-text {
+.layer-text {
   position: absolute;
-  bottom: 80px;
-  left: 0;
-  right: 0;
+  top: 50%;
+  left: 8%;
+  transform: translateY(-50%);
+  max-width: 40%;
   z-index: 3;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 0 80px;
-  text-align: center;
+  pointer-events: none;
 }
 
-.wipe-text h2 {
+.top-text h2 {
   font-family: 'Anton', sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(3rem, 6vw, 5rem);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: 0.01em;
@@ -307,7 +306,19 @@
   color: #f5f0eb;
   text-shadow:
     0 2px 4px rgba(0, 0, 0, 0.5),
-    0 4px 20px rgba(0, 0, 0, 0.3);
+    0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.bottom-text h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.2rem, 2.4vw, 2rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: #f5f0eb;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Philosophy ── */
@@ -345,20 +356,13 @@
   font-family: 'Inter', sans-serif;
 }
 
-.contact h2 {
-  font-family: 'Anton', sans-serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 400;
-  letter-spacing: 0.02em;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-}
-
-.contact p {
-  color: rgba(245, 240, 235, 0.45);
-  font-size: 1rem;
+.contact-intro {
+  color: rgba(245, 240, 235, 0.6);
+  font-size: 1.1rem;
   line-height: 1.6;
   margin-bottom: 40px;
+  letter-spacing: 0.04em;
+  font-family: 'Inter', sans-serif;
 }
 
 .contact-email {
@@ -419,18 +423,13 @@
     padding: 0 40px;
   }
 
-  .hero-bar {
-    left: 40px;
-  }
-
   .garage-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .wipe-text {
-    padding: 0 40px;
-    bottom: 60px;
-    max-width: 500px;
+  .layer-text {
+    left: 5%;
+    max-width: 55%;
   }
 }
 
@@ -440,7 +439,6 @@
   }
 
   .hero-bar {
-    left: 24px;
     bottom: 24px;
   }
 
@@ -453,14 +451,18 @@
     padding: 80px 16px;
   }
 
-  .wipe-text {
-    padding: 0 24px;
-    bottom: 40px;
-    max-width: 400px;
+  .layer-text {
+    left: 6%;
+    max-width: 70%;
   }
 
-  .wipe-text h2 {
-    font-size: 1.4rem;
+  .top-text h2 {
+    font-size: 2rem;
+  }
+
+  .bottom-text h2 {
+    font-size: 1rem;
+    line-height: 1.3;
   }
 
   .philosophy {
