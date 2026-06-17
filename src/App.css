@@ -18,29 +18,17 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   background: #0a0a0a;
   overflow: hidden;
   padding: 0 80px;
 }
 
-.hero-brand {
-  position: absolute;
-  top: 40px;
-  left: 80px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(245, 240, 235, 0.35);
-}
-
 .hero-content {
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  text-align: center;
 }
 
 .hero-quote {
@@ -51,6 +39,7 @@
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #f5f0eb;
+  text-align: center;
   text-shadow:
     0 0 10px rgba(245, 240, 235, 0.15),
     0 0 30px rgba(245, 240, 235, 0.06),
@@ -161,10 +150,96 @@
   color: #f5f0eb;
 }
 
+.garage-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+}
+
+.garage-card-media:hover .garage-card-overlay {
+  opacity: 1;
+}
+
+.garage-card-watch {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 24px;
+  border: 1px solid rgba(245, 240, 235, 0.3);
+  background: rgba(245, 240, 235, 0.08);
+  color: #f5f0eb;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(4px);
+}
+
+.garage-card-watch:hover {
+  background: rgba(245, 240, 235, 0.18);
+  border-color: rgba(245, 240, 235, 0.6);
+}
+
+/* ── Video Player Modal ── */
+.video-player-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  animation: fade-in 0.2s ease;
+}
+
+.video-player-modal {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 9 / 16;
+  max-height: 90vh;
+}
+
+.video-player-modal video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  outline: none;
+}
+
+.video-player-close {
+  position: absolute;
+  top: -44px;
+  right: 0;
+  background: none;
+  border: none;
+  color: rgba(245, 240, 235, 0.6);
+  cursor: pointer;
+  padding: 8px;
+  transition: color 0.2s;
+  z-index: 1;
+}
+
+.video-player-close:hover {
+  color: #f5f0eb;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* ── Intro Wipe ── */
 .intro-wipe {
   position: relative;
-  height: 200vh;
+  height: 400vh;
 }
 
 .wipe-sticky {
@@ -213,17 +288,13 @@
 .wipe-text {
   position: absolute;
   bottom: 80px;
+  left: 0;
+  right: 0;
   z-index: 3;
   max-width: 600px;
+  margin: 0 auto;
   padding: 0 80px;
-}
-
-.wipe-text.left {
-  text-align: left;
-}
-
-.wipe-text.right {
-  text-align: left;
+  text-align: center;
 }
 
 .wipe-text h2 {
@@ -244,6 +315,17 @@
   padding: 120px 24px;
   max-width: 760px;
   margin: 0 auto;
+  text-align: center;
+}
+
+.philosophy-heading {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #f5f0eb;
+  margin-bottom: 32px;
 }
 
 .philosophy-content p {
@@ -337,10 +419,6 @@
     padding: 0 40px;
   }
 
-  .hero-brand {
-    left: 40px;
-  }
-
   .hero-bar {
     left: 40px;
   }
@@ -359,12 +437,6 @@
 @media (max-width: 640px) {
   .hero {
     padding: 0 24px;
-  }
-
-  .hero-brand {
-    left: 24px;
-    top: 24px;
-    font-size: 0.7rem;
   }
 
   .hero-bar {

@@ -19,7 +19,7 @@ const GARAGE_ITEMS = [
   { brand: 'MG', file: `${BASE}videos/mg.mp4`, instagram: 'https://www.instagram.com/reel/C5iBQz7ygu2/' },
 ]
 
-function VideoCard({ item }) {
+function VideoCard({ item, onPlay }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -45,6 +45,11 @@ function VideoCard({ item }) {
     <div className="garage-card">
       <div className="garage-card-media">
         <video ref={ref} src={item.file} muted loop playsInline />
+        <div className="garage-card-overlay">
+          <button className="garage-card-watch" onClick={() => onPlay(item.file)}>
+            Watch
+          </button>
+        </div>
       </div>
       <a
         href={item.instagram}
@@ -81,6 +86,26 @@ function AnimatedQuote() {
   )
 }
 
+function VideoPlayer({ file, onClose }) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => { document.body.style.overflow = '' }
+  }, [])
+
+  return (
+    <div className="video-player-overlay" onClick={onClose}>
+      <div className="video-player-modal" onClick={(e) => e.stopPropagation()}>
+        <button className="video-player-close" onClick={onClose} aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+        <video src={file} controls autoPlay playsInline />
+      </div>
+    </div>
+  )
+}
+
 function IntroWipe() {
   const sectionRef = useRef(null)
   const [progress, setProgress] = useState(0)
@@ -108,9 +133,9 @@ function IntroWipe() {
     <section ref={sectionRef} className="intro-wipe" id="intro">
       <div className="wipe-sticky">
         <div className="wipe-layer adult">
-          <img src={`${BASE}recent.jpg`} alt="Adult" />
+          <img src={`${BASE}big-boy.jpg`} alt="Adult" />
           <div className="wipe-overlay" />
-          <div className="wipe-text right">
+          <div className="wipe-text">
             <h2>I may look like this now, but I&apos;m still the kid who survived.<br />That&apos;s what an artist is at the end of the day.</h2>
           </div>
         </div>
@@ -118,7 +143,7 @@ function IntroWipe() {
           <img src={`${BASE}childhood.jpg`} alt="Childhood" />
           <div className="wipe-glow" />
           <div className="wipe-overlay" />
-          <div className="wipe-text left">
+          <div className="wipe-text">
             <h2>That&apos;s me, Ajay!</h2>
           </div>
         </div>
@@ -128,6 +153,8 @@ function IntroWipe() {
 }
 
 function App() {
+  const [playingVideo, setPlayingVideo] = useState(null)
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -149,7 +176,6 @@ function App() {
       <div className="film-grain" />
 
       <section className="hero">
-        <div className="hero-brand">Ajay Panwar</div>
         <div className="hero-content">
           <AnimatedQuote />
         </div>
@@ -163,7 +189,7 @@ function App() {
         </div>
         <div className="garage-grid">
           {GARAGE_ITEMS.map((item, i) => (
-            <VideoCard key={i} item={item} />
+            <VideoCard key={i} item={item} onPlay={setPlayingVideo} />
           ))}
         </div>
       </section>
@@ -172,6 +198,7 @@ function App() {
 
       <section className="philosophy" id="philosophy">
         <div className="philosophy-content">
+          <h2 className="philosophy-heading">Marketing Philosophy</h2>
           <p>
             I could mention the great numbers and achievements I got through my
             work, but that&apos;s not why you are here. If you needed numbers,
@@ -220,6 +247,10 @@ function App() {
       <footer className="footer">
         &copy; {new Date().getFullYear()} Ajay Panwar
       </footer>
+
+      {playingVideo && (
+        <VideoPlayer file={playingVideo} onClose={() => setPlayingVideo(null)} />
+      )}
     </>
   )
 }
