@@ -110,11 +110,16 @@ function VideoPlayer({ file, onClose }) {
   )
 }
 
-function IntroWipe() {
+function IntroWipe({ isMobile }) {
   const sectionRef = useRef(null)
   const topLayerRef = useRef(null)
   const cutoutRef = useRef(null)
   const cutoutBottomRef = useRef(null)
+
+  const adultBg = isMobile ? `${BASE}adult-3904-mobile.jpg` : `${BASE}adult-3904.jpg`
+  const adultCut = isMobile ? `${BASE}adult-cutout-mobile.png` : `${BASE}adult-cutout.png`
+  const childBg = isMobile ? `${BASE}Childhood_2-mobile.jpg` : `${BASE}Childhood_2.jpg`
+  const childCut = isMobile ? `${BASE}childhood-cutout-mobile.png` : `${BASE}childhood-cutout.png`
 
   useEffect(() => {
     const section = sectionRef.current
@@ -148,16 +153,16 @@ function IntroWipe() {
   return (
     <section ref={sectionRef} className="intro-wipe" id="intro">
       <div className="bottom-layer">
-        <img src={`${BASE}adult-3904.jpg`} alt="" className="layer-image" />
+        <img src={adultBg} alt="" className="layer-image" />
         <div className="cutout-wrapper">
-          <img ref={cutoutBottomRef} src={`${BASE}adult-cutout.png`} alt="" className="cutout-subject" />
+          <img ref={cutoutBottomRef} src={adultCut} alt="" className="cutout-subject" />
         </div>
         <div className="layer-overlay" />
       </div>
       <div ref={topLayerRef} className="top-layer">
-        <img src={`${BASE}Childhood_2.jpg`} alt="" className="layer-image" />
+        <img src={childBg} alt="" className="layer-image" />
         <div className="cutout-wrapper">
-          <img ref={cutoutRef} src={`${BASE}childhood-cutout.png`} alt="" className="cutout-subject" />
+          <img ref={cutoutRef} src={childCut} alt="" className="cutout-subject" />
         </div>
         <div className="layer-overlay" />
       </div>
@@ -229,7 +234,7 @@ function App() {
         )}
       </section>
 
-      <IntroWipe />
+      <IntroWipe isMobile={isMobile} />
 
       <section className="philosophy" id="philosophy">
         <div className="philosophy-content">

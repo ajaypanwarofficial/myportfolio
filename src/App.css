@@ -484,14 +484,6 @@
     padding: 80px 16px;
   }
 
-  .layer-image {
-    object-position: 50% 40%;
-  }
-
-  .cutout-subject {
-    object-position: 50% 40%;
-  }
-
   .intro-magazine-headline {
     font-size: clamp(2.2rem, 14vw, 4rem);
   }
