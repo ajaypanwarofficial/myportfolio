@@ -114,31 +114,13 @@ function IntroWipe() {
   const sectionRef = useRef(null)
   const topLayerRef = useRef(null)
   const cutoutRef = useRef(null)
-  const glowRunRef = useRef(null)
-  const topRaysRef = useRef(null)
-  const topOverlayRef = useRef(null)
-  const topBadgeRef = useRef(null)
-  const backlightRef = useRef(null)
   const cutoutBottomRef = useRef(null)
-  const glowBottomRef = useRef(null)
-  const bottomRaysRef = useRef(null)
-  const bottomBacklightRef = useRef(null)
-  const bottomBadgeRef = useRef(null)
 
   useEffect(() => {
     const section = sectionRef.current
     const topLayer = topLayerRef.current
     const cutout = cutoutRef.current
-    const glowRun = glowRunRef.current
-    const topRays = topRaysRef.current
-    const topOverlay = topOverlayRef.current
-    const topBadge = topBadgeRef.current
-    const backlight = backlightRef.current
     const cutoutBottom = cutoutBottomRef.current
-    const glowBottom = glowBottomRef.current
-    const bottomRays = bottomRaysRef.current
-    const bottomBacklight = bottomBacklightRef.current
-    const bottomBadge = bottomBadgeRef.current
     if (!section || !topLayer) return
 
     const tl = gsap.timeline({
@@ -152,39 +134,11 @@ function IntroWipe() {
     })
 
     tl.set(topLayer, { clipPath: 'inset(0 0 0 0)' })
-    tl.set(topBadge, { opacity: 0 })
-    tl.set(glowRun, { opacity: 0, '--glow-angle': '10deg' })
-    tl.set(topRays, { opacity: 0 })
-    tl.set(backlight, { opacity: 0 })
-    tl.set(bottomBadge, { opacity: 0 })
-    tl.set(glowBottom, { opacity: 0, '--glow-angle': '10deg' })
-    tl.set(bottomRays, { opacity: 0 })
-    tl.set(bottomBacklight, { opacity: 0 })
+    tl.set(cutoutBottom, { opacity: 0 })
 
-    tl.to(cutout, { opacity: 1, scale: 1.025, duration: 0.5, ease: 'power2.out' }, 0)
-    tl.to(topOverlay, { opacity: 0.7, duration: 0.4, ease: 'power2.out' }, 0)
-    tl.to(backlight, { opacity: 1, duration: 0.6, ease: 'power2.out' }, 0)
-    tl.to(topRays, { opacity: 0.5, duration: 0.7, ease: 'power2.out' }, 0)
-
-    tl.to(glowRun, {
-      opacity: 0.75,
-      '--glow-angle': '380deg',
-      duration: 1.0,
-      ease: 'power2.inOut',
-    }, 0.1)
-
-    tl.to(topBadge, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.2)
-
-    tl.to(glowRun, { opacity: 0.12, duration: 0.4, ease: 'power2.out' }, 0.6)
-    tl.to(topRays, { opacity: 0.15, duration: 0.4, ease: 'power2.out' }, 0.6)
-
-    tl.to(topLayer, { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'power2.inOut' }, 1.0)
-
-    tl.to(cutoutBottom, { opacity: 1, scale: 1.015, duration: 0.4, ease: 'power2.out' }, 1.05)
-    tl.to(glowBottom, { opacity: 0.55, '--glow-angle': '220deg', duration: 0.5, ease: 'power2.out' }, 1.1)
-    tl.to(bottomRays, { opacity: 0.35, duration: 0.5, ease: 'power2.out' }, 1.1)
-    tl.to(bottomBacklight, { opacity: 0.6, duration: 0.4, ease: 'power2.out' }, 1.1)
-    tl.to(bottomBadge, { opacity: 1, duration: 0.35, ease: 'power2.out' }, 1.35)
+    tl.to(cutout, { opacity: 1, scale: 1.025, duration: 0.3, ease: 'power2.out' }, 0)
+    tl.to(topLayer, { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'power2.inOut' }, 0.3)
+    tl.to(cutoutBottom, { opacity: 1, scale: 1.015, duration: 0.3, ease: 'power2.out' }, 0.35)
 
     return () => {
       ScrollTrigger.getAll().forEach((st) => st.kill())
@@ -194,39 +148,22 @@ function IntroWipe() {
   return (
     <section ref={sectionRef} className="intro-wipe" id="intro">
       <div className="bottom-layer">
-        <img src={`${BASE}adult-3904.jpg`} alt="Adult" className="layer-image" />
-        <div className="cutout-wrapper cutout-bottom-wrapper">
-          <div ref={glowBottomRef} className="cutout-glow-run">
-            <img src={`${BASE}adult-cutout.png`} alt="" className="cutout-glow-image" />
-          </div>
-          <div ref={bottomRaysRef} className="cutout-rays" />
-          <div ref={bottomBacklightRef} className="backlight" />
-          <img ref={cutoutBottomRef} src={`${BASE}adult-cutout.png`} alt="" className="cutout-subject cutout-bottom" />
+        <img src={`${BASE}adult-3904.jpg`} alt="" className="layer-image" />
+        <div className="cutout-wrapper">
+          <img ref={cutoutBottomRef} src={`${BASE}adult-cutout.png`} alt="" className="cutout-subject" />
         </div>
         <div className="layer-overlay" />
-        <div className="layer-text bottom-text">
-          <div ref={bottomBadgeRef} className="text-badge">
-            <p className="bottom-text-paragraph">Although I have grown up a little bit, I try to preserve that childlike quality. It&apos;s not easy, but that&apos;s the only thing which keeps it fun. I read somewhere on the internet that an artist is basically a kid who survived&hellip; I think I survived.</p>
-          </div>
-        </div>
       </div>
       <div ref={topLayerRef} className="top-layer">
-        <img src={`${BASE}Childhood_2.jpg`} alt="Childhood" className="layer-image" />
+        <img src={`${BASE}Childhood_2.jpg`} alt="" className="layer-image" />
         <div className="cutout-wrapper">
-          <div ref={glowRunRef} className="cutout-glow-run">
-            <img src={`${BASE}childhood-cutout.png`} alt="" className="cutout-glow-image" />
-          </div>
-          <div ref={topRaysRef} className="cutout-rays" />
-          <div ref={backlightRef} className="backlight" />
           <img ref={cutoutRef} src={`${BASE}childhood-cutout.png`} alt="" className="cutout-subject" />
         </div>
-        <div ref={topOverlayRef} className="layer-overlay" />
-        <div className="layer-glow" />
-        <div className="layer-text top-text">
-          <div ref={topBadgeRef} className="text-badge">
-            <p className="subject-callout">Hi, I&apos;m Ajay</p>
-          </div>
-        </div>
+        <div className="layer-overlay" />
+      </div>
+      <div className="intro-magazine-text">
+        <h1 className="intro-magazine-headline">Hi, I&apos;m Ajay</h1>
+        <p className="intro-magazine-paragraph">I have grown up a little bit, but I try to preserve that kid. It&apos;s not easy, but that&apos;s what keeps it fun. I read somewhere on the internet that &ldquo;an artist is basically a kid who survived&rdquo; &mdash; I think I survived.</p>
       </div>
     </section>
   )
