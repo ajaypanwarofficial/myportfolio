@@ -48,7 +48,7 @@ function VideoCard({ item, onPlay }) {
   return (
     <div className="garage-card">
       <div className="garage-card-media">
-        <video ref={ref} src={item.file} muted loop playsInline />
+        <video ref={ref} src={item.file} muted loop playsInline preload="metadata" />
         <div className="garage-card-overlay">
           <button className="garage-card-watch" onClick={() => onPlay(item.file)}>
             Watch
@@ -153,16 +153,16 @@ function IntroWipe({ isMobile }) {
   return (
     <section ref={sectionRef} className="intro-wipe" id="intro">
       <div className="bottom-layer">
-        <img src={adultBg} alt="" className="layer-image" />
+        <img src={adultBg} alt="" className="layer-image" loading="lazy" />
         <div className="cutout-wrapper">
-          <img ref={cutoutBottomRef} src={adultCut} alt="" className="cutout-subject" />
+          <img ref={cutoutBottomRef} src={adultCut} alt="" className="cutout-subject" loading="lazy" />
         </div>
         <div className="layer-overlay" />
       </div>
       <div ref={topLayerRef} className="top-layer">
-        <img src={childBg} alt="" className="layer-image" />
+        <img src={childBg} alt="" className="layer-image" loading="lazy" />
         <div className="cutout-wrapper">
-          <img ref={cutoutRef} src={childCut} alt="" className="cutout-subject" />
+          <img ref={cutoutRef} src={childCut} alt="" className="cutout-subject" loading="lazy" />
         </div>
         <div className="layer-overlay" />
       </div>
