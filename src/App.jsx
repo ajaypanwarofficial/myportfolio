@@ -171,6 +171,15 @@ function IntroWipe() {
 
 function App() {
   const [playingVideo, setPlayingVideo] = useState(null)
+  const [garageExpanded, setGarageExpanded] = useState(false)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 640)
+
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const handler = (e) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -206,10 +215,18 @@ function App() {
           <p>stuff i&apos;ve made</p>
         </div>
         <div className="garage-grid">
-          {GARAGE_ITEMS.map((item, i) => (
-            <VideoCard key={i} item={item} onPlay={setPlayingVideo} />
-          ))}
+          {GARAGE_ITEMS.map((item, i) => {
+            if (isMobile && !garageExpanded && i >= 5) return null
+            return <VideoCard key={i} item={item} onPlay={setPlayingVideo} />
+          })}
         </div>
+        {isMobile && !garageExpanded && GARAGE_ITEMS.length > 5 && (
+          <div className="garage-show-more-wrap">
+            <button className="garage-show-more" onClick={() => setGarageExpanded(true)}>
+              Show all {GARAGE_ITEMS.length} videos
+            </button>
+          </div>
+        )}
       </section>
 
       <IntroWipe />

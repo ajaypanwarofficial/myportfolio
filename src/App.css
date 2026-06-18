@@ -167,6 +167,37 @@
   opacity: 1;
 }
 
+.garage-show-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.garage-show-more-wrap:empty {
+  display: none;
+}
+
+.garage-show-more {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 14px 36px;
+  border: 1px solid rgba(245, 240, 235, 0.2);
+  background: rgba(12, 10, 9, 0.6);
+  color: #f5f0eb;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.garage-show-more:hover {
+  background: rgba(245, 240, 235, 0.1);
+  border-color: rgba(245, 240, 235, 0.5);
+}
+
 .garage-card-watch {
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
@@ -451,6 +482,10 @@
 
   .garage {
     padding: 80px 16px;
+  }
+
+  .cutout-subject {
+    object-fit: contain;
   }
 
   .intro-magazine-headline {
