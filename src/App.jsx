@@ -223,7 +223,7 @@ function App() {
         {isMobile && !garageExpanded && GARAGE_ITEMS.length > 5 && (
           <div className="garage-show-more-wrap">
             <button className="garage-show-more" onClick={() => setGarageExpanded(true)}>
-              Show all {GARAGE_ITEMS.length} videos
+              Show more
             </button>
           </div>
         )}

@@ -484,8 +484,12 @@
     padding: 80px 16px;
   }
 
+  .layer-image {
+    object-position: 50% 40%;
+  }
+
   .cutout-subject {
-    object-fit: contain;
+    object-position: 50% 40%;
   }
 
   .intro-magazine-headline {
