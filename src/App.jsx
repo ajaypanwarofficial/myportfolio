@@ -153,16 +153,28 @@ function IntroWipe({ isMobile }) {
   return (
     <section ref={sectionRef} className="intro-wipe" id="intro">
       <div className="bottom-layer">
-        <img src={adultBg} alt="" className="layer-image" loading="lazy" />
+        <picture>
+          <source srcSet={adultBg.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
+          <img src={adultBg} alt="" className="layer-image" loading="lazy" />
+        </picture>
         <div className="cutout-wrapper">
-          <img ref={cutoutBottomRef} src={adultCut} alt="" className="cutout-subject" loading="lazy" />
+          <picture>
+            <source srcSet={adultCut.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
+            <img ref={cutoutBottomRef} src={adultCut} alt="" className="cutout-subject" loading="lazy" />
+          </picture>
         </div>
         <div className="layer-overlay" />
       </div>
       <div ref={topLayerRef} className="top-layer">
-        <img src={childBg} alt="" className="layer-image" loading="lazy" />
+        <picture>
+          <source srcSet={childBg.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
+          <img src={childBg} alt="" className="layer-image" loading="lazy" />
+        </picture>
         <div className="cutout-wrapper">
-          <img ref={cutoutRef} src={childCut} alt="" className="cutout-subject" loading="lazy" />
+          <picture>
+            <source srcSet={childCut.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
+            <img ref={cutoutRef} src={childCut} alt="" className="cutout-subject" loading="lazy" />
+          </picture>
         </div>
         <div className="layer-overlay" />
       </div>

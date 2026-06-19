@@ -48,6 +48,12 @@ async function main() {
 
     const saved = ((1 - newBytes / oldBytes) * 100).toFixed(0)
     console.log(`  ${(oldBytes / 1024 / 1024).toFixed(1)}MB → ${(newBytes / 1024 / 1024).toFixed(1)}MB  (${saved}% saved)`)
+
+    // Generate WebP version alongside
+    const webpPath = path.replace(/\.(jpg|png)$/, '.webp')
+    const webpBytes = (await sharp(path).webp({ quality: 80 }).toFile(webpPath)).size
+    const webpSaved = ((1 - webpBytes / oldBytes) * 100).toFixed(0)
+    console.log(`  WebP: ${(webpBytes / 1024).toFixed(0)}KB  (${webpSaved}% saved)`)
   }
 }
 
