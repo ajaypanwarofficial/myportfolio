@@ -61,7 +61,18 @@ function VideoCard({ item, onPlay }) {
         rel="noreferrer"
         className="garage-card-link"
       >
-        {item.brand} ↗
+        {item.brand}
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 10 10"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ display: 'inline', verticalAlign: 'middle', margin: '0 0 1px 2px' }}
+        >
+          <path d="M1 9L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M3 1H9V7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
       </a>
     </div>
   )
@@ -233,7 +244,7 @@ function App() {
         </div>
         <div className="garage-grid">
           {GARAGE_ITEMS.map((item, i) => {
-            if (isMobile && !garageExpanded && i >= 5) return null
+            if (isMobile && !garageExpanded && i >= 6) return null
             return <VideoCard key={i} item={item} onPlay={setPlayingVideo} />
           })}
         </div>
