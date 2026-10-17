@@ -49,7 +49,15 @@ function VideoCard({ item, onPlay }) {
   return (
     <div className="garage-card">
       <div className="garage-card-media">
-        <video ref={ref} src={item.file} muted loop playsInline preload="metadata" />
+        <video
+          ref={ref}
+          src={item.file}
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={`${item.brand} ad reel by Ajay Panwar`}
+        />
         <div className="garage-card-overlay">
           <button className="garage-card-watch" onClick={() => onPlay(item.file)}>
             Watch
@@ -122,11 +130,42 @@ function VideoPlayer({ file, onClose }) {
   )
 }
 
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v))
+const seg = (p, a, b) => clamp((p - a) / (b - a))
+const ease = (t) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2)
+const lerp = (a, b, t) => a + (b - a) * t
+
+// Where the photo ends up as a print, in fractions of the image. The cutout is clipped to
+// this window on the sides and bottom only, so the head climbs out over the top edge.
+const PRINT = {
+  desktop: { x: 0.34, y: 0.3, x2: 0.88, y2: 0.96, focus: 0.61, aspect: 16 / 9 },
+  mobile: { x: 0.05, y: 0.3, x2: 0.95, y2: 0.97, focus: 0.5, aspect: 9 / 16 },
+}
+
+function PrintSet({ setRef, bg, cut, caption }) {
+  const webp = (src) => src.replace(/\.(jpg|png)$/, '.webp')
+  return (
+    <div ref={setRef} className="intro-set">
+      <div className="intro-card"><span>{caption}</span></div>
+      <div className="intro-win">
+        <picture>
+          <source srcSet={webp(bg)} type="image/webp" />
+          <img src={bg} alt="" loading="lazy" />
+        </picture>
+      </div>
+      <picture>
+        <source srcSet={webp(cut)} type="image/webp" />
+        <img src={cut} alt="" className="intro-cut" loading="lazy" />
+      </picture>
+    </div>
+  )
+}
+
 function IntroWipe({ isMobile }) {
   const sectionRef = useRef(null)
-  const topLayerRef = useRef(null)
-  const cutoutRef = useRef(null)
-  const cutoutBottomRef = useRef(null)
+  const kidRef = useRef(null)
+  const adultRef = useRef(null)
+  const textRef = useRef(null)
 
   const adultBg = isMobile ? `${BASE}adult-3904-mobile.jpg` : `${BASE}adult-3904.jpg`
   const adultCut = isMobile ? `${BASE}adult-cutout-mobile.png` : `${BASE}adult-cutout.png`
@@ -135,62 +174,124 @@ function IntroWipe({ isMobile }) {
 
   useEffect(() => {
     const section = sectionRef.current
-    const topLayer = topLayerRef.current
-    const cutout = cutoutRef.current
-    const cutoutBottom = cutoutBottomRef.current
-    if (!section || !topLayer) return
+    const sets = [kidRef.current, adultRef.current]
+    const text = textRef.current
+    if (!section || !text || sets.some((s) => !s)) return
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: 'top top',
-        end: '+=200%',
-        pin: true,
-        scrub: true,
+    const R = isMobile ? PRINT.mobile : PRINT.desktop
+    let g = null
+
+    function layout() {
+      const w = section.clientWidth
+      const h = section.clientHeight
+      const cover = w / h > R.aspect
+      const fw = cover ? w : h * R.aspect
+      const fh = fw / R.aspect
+      const left0 = fw > w ? clamp(w / 2 - R.focus * fw, w - fw, 0) : 0
+      const top0 = fh > h ? (h - fh) * 0.12 : 0
+      const rw = (R.x2 - R.x) * fw
+      const foot = 0.06 * fw
+      const tall = R.y2 * fh + foot // head top to bottom of the print's white strip
+      const c = { x: ((R.x + R.x2) / 2) * fw, y: ((R.y + R.y2) / 2) * fh }
+      const stacked = isMobile || w < 900 || w / h < 1.1
+      section.classList.toggle('is-stacked', stacked)
+
+      let k, tx, headTop
+      if (stacked) {
+        headTop = 0.06 * h
+        k = Math.min((0.9 * w) / rw, (text.offsetTop - 16 - headTop) / tall)
+        tx = w / 2
+      } else {
+        const textRight = text.offsetLeft + text.offsetWidth
+        k = (0.82 * h) / tall
+        k = Math.min(k, (w - 32 - textRight - 40) / rw)
+        tx = Math.max(0.66 * w, textRight + 40 + (rw * k) / 2)
+        headTop = (h - tall * k) / 2
+      }
+      g = { w, fw, fh, left0, top0, rw, foot, c, k, tx, ty: headTop + c.y * k }
+
+      sets.forEach((s) => {
+        s.style.width = `${fw}px`
+        s.style.height = `${fh}px`
+      })
+    }
+
+    function place(set, t, s, rot, dx, open, caption) {
+      const r = { x: lerp(0, R.x, open), y: lerp(0, R.y, open), x2: lerp(1, R.x2, open), y2: lerp(1, R.y2, open) }
+      const pct = (v) => `${v * 100}%`
+      const win = set.querySelector('.intro-win')
+      const img = win.querySelector('img')
+      const card = set.querySelector('.intro-card')
+      const cut = set.querySelector('.intro-cut')
+      const b = 0.012 * g.fw * open
+      const foot = g.foot * open
+
+      Object.assign(win.style, { left: pct(r.x), top: pct(r.y), width: pct(r.x2 - r.x), height: pct(r.y2 - r.y) })
+      Object.assign(img.style, {
+        left: pct(-r.x / (r.x2 - r.x)),
+        top: pct(-r.y / (r.y2 - r.y)),
+        width: pct(1 / (r.x2 - r.x)),
+        height: pct(1 / (r.y2 - r.y)),
+      })
+      Object.assign(card.style, {
+        left: `calc(${pct(r.x)} - ${b}px)`,
+        top: `calc(${pct(r.y)} - ${b}px)`,
+        width: `calc(${pct(r.x2 - r.x)} + ${2 * b}px)`,
+        height: `calc(${pct(r.y2 - r.y)} + ${b + foot}px)`,
+        opacity: seg(open, 0, 0.15),
+      })
+      caption.style.fontSize = `${g.foot * 0.42}px`
+      caption.style.paddingBottom = `${g.foot * 0.28}px`
+      caption.style.opacity = seg(open, 0.75, 1)
+      cut.style.clipPath = `inset(0 ${pct(1 - r.x2)} ${pct(1 - r.y2)} ${pct(r.x)})`
+
+      const x = g.left0 + lerp(0, g.tx - g.c.x - g.left0, t) + dx
+      const y = g.top0 + lerp(0, g.ty - g.c.y - g.top0, t)
+      set.style.transform = `translate(${x}px, ${y}px) translate(${g.c.x}px, ${g.c.y}px) rotate(${rot}deg) scale(${s}) translate(${-g.c.x}px, ${-g.c.y}px)`
+    }
+
+    function render(p) {
+      if (!g) return
+      const [kid, adult] = sets
+      const shrink = ease(seg(p, 0.04, 0.34))
+      const slide = ease(seg(p, 0.5, 0.82))
+      const printW = g.rw * g.k
+
+      place(kid, shrink, lerp(1, g.k, shrink), lerp(0, -3, ease(seg(p, 0.3, 0.82))), -0.08 * printW * slide, shrink, kid.querySelector('span'))
+      kid.style.filter = slide > 0 ? `brightness(${lerp(1, 0.5, slide)})` : 'none'
+
+      const offscreen = g.w - (g.tx - printW / 2) + 60
+      adult.style.visibility = p < 0.48 ? 'hidden' : 'visible'
+      place(adult, 1, g.k, lerp(6, 1.5, slide), lerp(offscreen, 0, slide), 1, adult.querySelector('span'))
+
+      const show = seg(p, 0.22, 0.36)
+      text.style.opacity = show
+      text.style.transform = `translateY(${(1 - show) * 20}px)`
+    }
+
+    const st = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: '+=250%',
+      pin: true,
+      scrub: true,
+      onUpdate: (self) => render(self.progress),
+      onRefresh: (self) => {
+        layout()
+        render(self.progress)
       },
     })
+    layout()
+    render(st.progress)
 
-    tl.set(topLayer, { clipPath: 'inset(0 0 0 0)' })
-    tl.set(cutoutBottom, { opacity: 0 })
-
-    tl.to(cutout, { opacity: 1, scale: 1.025, duration: 0.3, ease: 'power2.out' }, 0)
-    tl.to(topLayer, { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'power2.inOut' }, 0.3)
-    tl.to(cutoutBottom, { opacity: 1, scale: 1.015, duration: 0.3, ease: 'power2.out' }, 0.35)
-
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill())
-    }
-  }, [])
+    return () => st.kill()
+  }, [isMobile])
 
   return (
     <section ref={sectionRef} className="intro-wipe" id="intro">
-      <div className="bottom-layer">
-        <picture>
-          <source srcSet={adultBg.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
-          <img src={adultBg} alt="" className="layer-image" loading="lazy" />
-        </picture>
-        <div className="cutout-wrapper">
-          <picture>
-            <source srcSet={adultCut.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
-            <img ref={cutoutBottomRef} src={adultCut} alt="" className="cutout-subject" loading="lazy" />
-          </picture>
-        </div>
-        <div className="layer-overlay" />
-      </div>
-      <div ref={topLayerRef} className="top-layer">
-        <picture>
-          <source srcSet={childBg.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
-          <img src={childBg} alt="" className="layer-image" loading="lazy" />
-        </picture>
-        <div className="cutout-wrapper">
-          <picture>
-            <source srcSet={childCut.replace(/\.(jpg|png)$/, '.webp')} type="image/webp" />
-            <img ref={cutoutRef} src={childCut} alt="" className="cutout-subject" loading="lazy" />
-          </picture>
-        </div>
-        <div className="layer-overlay" />
-      </div>
-      <div className="intro-magazine-text">
+      <PrintSet setRef={kidRef} bg={childBg} cut={childCut} caption="Then" />
+      <PrintSet setRef={adultRef} bg={adultBg} cut={adultCut} caption="Now" />
+      <div ref={textRef} className="intro-magazine-text">
         <h1 className="intro-magazine-headline">Hi, I&apos;m Ajay</h1>
         <p className="intro-magazine-paragraph">I have grown up a little bit, but I try to preserve that kid. It&apos;s not easy, but that&apos;s what keeps it fun. I read somewhere on the internet that &ldquo;an artist is basically a kid who survived&rdquo; &mdash; I think I survived.</p>
       </div>
@@ -201,7 +302,7 @@ function IntroWipe({ isMobile }) {
 function App() {
   const [playingVideo, setPlayingVideo] = useState(null)
   const [garageExpanded, setGarageExpanded] = useState(false)
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 640)
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth <= 640)
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 640px)')

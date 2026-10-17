@@ -279,53 +279,58 @@
   position: relative;
   width: 100%;
   height: 100vh;
-}
-
-.bottom-layer,
-.top-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
   overflow: hidden;
-  isolation: isolate;
+  background: #0c0a09;
 }
 
-.layer-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
-  display: block;
-}
-
-.top-layer {
-  z-index: 2;
-  clip-path: inset(0 0 0 0);
-}
-
-.cutout-wrapper {
+/* One photo + its cutout. JS sizes it to cover the screen, then shrinks it into a print. */
+.intro-set {
   position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+  will-change: transform;
 }
 
-.cutout-subject {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.intro-card {
+  position: absolute;
+  background: #efe9df;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
   opacity: 0;
-  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.6));
-  will-change: transform, opacity;
 }
 
-.layer-overlay {
+.intro-card span {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  font-family: 'Anton', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  color: #2a2522;
+}
+
+.intro-win {
   position: absolute;
   inset: 0;
-  background: rgba(12, 10, 9, 0.4);
-  z-index: 1;
+  overflow: hidden;
+}
+
+.intro-win img,
+.intro-cut {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.intro-cut {
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.45));
 }
 
 /* ── Intro Magazine Text ── */
@@ -337,6 +342,18 @@
   z-index: 5;
   padding: 40px clamp(24px, 5vw, 80px) 60px;
   pointer-events: none;
+  opacity: 0;
+}
+
+/* Side-by-side layout: text column on the left, print on the right */
+.intro-wipe:not(.is-stacked) .intro-magazine-text {
+  right: auto;
+  width: min(42vw, 620px);
+  padding-right: 0;
+}
+
+.intro-wipe:not(.is-stacked) .intro-magazine-headline {
+  font-size: clamp(3rem, 6.5vw, 7rem);
 }
 
 .intro-magazine-headline {
