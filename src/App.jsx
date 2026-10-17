@@ -21,6 +21,7 @@ const GARAGE_ITEMS = [
   { brand: 'Jagruk Journal', file: `${BASE}videos/jagruk.mp4`, instagram: 'https://www.instagram.com/reel/DSZ-4p7EuNE/' },
   { brand: 'Angel One', file: `${BASE}videos/angelone.mp4`, instagram: 'https://www.instagram.com/reel/DTfiU7pkkIw/' },
   { brand: 'MG', file: `${BASE}videos/mg.mp4`, instagram: 'https://www.instagram.com/reel/C5iBQz7ygu2/' },
+  { brand: 'Art Village Naggar', file: `${BASE}videos/naggar.mp4`, instagram: 'https://www.instagram.com/reel/DFsgamQTBuO/' },
 ]
 
 function VideoCard({ item, onPlay }) {
