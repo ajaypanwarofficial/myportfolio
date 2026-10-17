@@ -9,8 +9,9 @@ Built with **React + Vite**. Deployed to **GitHub Pages** via GitHub Actions.
 ## Sections
 
 - **Hero** — Full-viewport video background with tagline
-- **Brands** — Brands worked with (ChatGPT, Wint Wealth, Ather, Jio)
-- **Selected Work** — Autoplaying 9:16 video reels with IntersectionObserver
+- **Content Garage** — Autoplaying 9:16 video reels (IntersectionObserver) for ChatGPT, Wint Wealth, Mission Busi, Ather, Jio, TVS, Jagruk Journal, Angel One, MG and Art Village Naggar
+- **Intro** — Scroll-pinned childhood → adult photo wipe (GSAP ScrollTrigger)
+- **Marketing Philosophy**
 - **Contact** — Email & social links (Instagram, YouTube, LinkedIn)
 
 ## Tech Stack
